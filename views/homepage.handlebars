@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Blog - Homepage</title>
+</head>
+<body>
+    <header>
+        <!-- Basic navigation -->
+        <nav>
+            <a href="/">Homepage</a>
+            <a href="/dashboard">Dashboard</a>
+            {{#if logged_in}}
+                <a href="/logout">Logout</a>
+            {{else}}
+                <a href="/login">Login</a>
+            {{/if}}
+        </nav>
+    </header>
+
+    <main>
+        {{#each blogPosts as |post|}}
+            <article>
+                <h2>{{post.title}}</h2>
+                <p>Posted by {{post.User.username}} on {{post.date_created}}</p>
+                <p>{{post.description}}</p>
+                <a href="/blogPost/{{post.id}}">Read More</a>
+            </article>
+        {{/each}}
+    </main>
+
+    <footer>
+        <!-- Any footer content or links -->
+    </footer>
+</body>
+</html>

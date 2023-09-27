@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Blog - Dashboard</title>
+</head>
+<body>
+    <header>
+        <!-- Basic navigation -->
+        <nav>
+            <a href="/">Homepage</a>
+            <a href="/dashboard">Dashboard</a>
+            {{#if logged_in}}
+                <a href="/logout">Logout</a>
+            {{else}}
+                <a href="/login">Login</a>
+            {{/if}}
+        </nav>
+    </header>
+
+    <main>
+        <h1>Your Posts</h1>
+
+        {{#if BlogPosts}}
+            {{#each BlogPosts as |post|}}
+                <article>
+                    <h2>{{post.title}}</h2>
+                    <p>{{post.description}}</p>
+                    <a href="/edit/{{post.id}}">Edit</a>
+                    <!-- Implement deletion using a form or button with a specific route to handle deletion -->
+                    <button data-postid="{{post.id}}">Delete</button>
+                </article>
+            {{/each}}
+        {{else}}
+            <p>You haven't posted anything yet.</p>
+        {{/if}}
+
+        <a href="/create">Create New Post</a>
+    </main>
+
+    <footer>
+        <!-- Any footer content or links -->
+    </footer>
+</body>
+</html>

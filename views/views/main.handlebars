@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Blog</title>
+    <!-- Any common CSS links -->
+    <link rel="stylesheet" href="../../public/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <!-- Basic navigation -->
+        <nav>
+            <a href="/">Homepage</a>
+            {{#if logged_in}}
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+            {{else}}
+            <a href="/login">Login</a>
+            {{/if}}
+        </nav>
+    </header>
+
+    <!-- This is where specific page content will be injected -->
+    {{{body}}}
+
+    <footer>
+        <!-- Any footer content or links -->
+        <p>&copy; 2023 Tech Blog</p>
+    </footer>
+
+    <!-- Any common JS scripts -->
+    <script src="/path/to/your/scripts.js"></script>
+
+</body>
+
+</html>
