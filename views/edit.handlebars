@@ -1,0 +1,19 @@
+<main>
+    <h1>Edit Post</h1>
+    
+    <form action="/api/posts/{{post.id}}" method="post">
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="{{post.title}}" required>
+        </div>
+        
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required>{{post.description}}</textarea>
+        </div>
+
+        <button type="submit">Update Post</button>
+    </form>
+    
+    <a href="/dashboard">Back to Dashboard</a>
+</main>
