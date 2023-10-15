@@ -4,6 +4,7 @@ const session = require('express-session');
 const exphbs = require('express-handlebars');
 
 const routes = require('./controllers');
+const postRoutes = require('./routes/post-routes'); // Move this line up here
 const sequelize = require('./config/connection');
 const helpers = require('./utils/helpers');
 
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
+app.use('/posts', postRoutes); // Use a prefix for post routes
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));

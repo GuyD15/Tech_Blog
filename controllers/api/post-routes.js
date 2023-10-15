@@ -1,81 +1,48 @@
 const router = require('express').Router();
-const { BlogPost } = require('../../models');
-const withAuth = require('../../utils/auth');
+const { Post } = require('../models');
+const withAuth = require('../utils/auth');
 
-router.get('/', async (req, res) => {
+// Route to render the edit page for an existing post
+router.get("/edit/:id", withAuth, async (req, res) => {
     try {
-        const postData = await BlogPost.findAll();
-        res.status(200).json(postData);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
-router.get('/:id', async (req, res) => {
-    try {
-        const postData = await BlogPost.findByPk(req.params.id);
-
+        const postData = await Post.findByPk(req.params.id);
         if (!postData) {
             res.status(404).json({ message: 'No post found with this id!' });
             return;
         }
-
-        res.status(200).json(postData);
+        const post = postData.get({ plain: true });
+        res.render("edit", { post });
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.post('/', withAuth, async (req, res) => {
+// Route to render the create page for a new post
+router.get("/create", withAuth, (req, res) => {
+    res.render("edit", { post: {} }); // Pass an empty post object for the create view
+});
+
+// Route to handle the submission of an edited post
+router.put("/api/posts/:id", withAuth, async (req, res) => {  // Changed to PUT for updating
     try {
-        const newPost = await BlogPost.create({
-            ...req.body,
-            user_id: req.session.user_id,
-        });
-        res.status(200).json(newPost);
+        const { title, description } = req.body;
+        await Post.update({ title, description }, { where: { id: req.params.id } });
+        res.redirect("/dashboard");
     } catch (err) {
-        res.status(400).json(err);
+        res.status(500).json(err);
     }
 });
 
-router.put('/:id', withAuth, async (req, res) => {
+// Route to handle the submission of a new post
+router.post("/api/posts", withAuth, async (req, res) => {  // Made the route more RESTful
     try {
-        const updatedPost = await BlogPost.update(req.body, {
-            where: {
-                id: req.params.id,
-                user_id: req.session.user_id, 
-            },
-        });
-
-        if (!updatedPost) {
-            res.status(404).json({ message: 'No post found with this id or you do not have access to make changes.' });
-            return;
-        }
-
-        res.status(200).json(updatedPost);
+        const { title, description } = req.body;
+        await Post.create({ title, description, user_id: req.session.user_id });
+        res.redirect("/dashboard");
     } catch (err) {
-        res.status(400).json(err);
-    }
-});
-
-router.delete('/:id', withAuth, async (req, res) => {
-    try {
-        const deletedPost = await BlogPost.destroy({
-            where: {
-                id: req.params.id,
-                user_id: req.session.user_id,
-            },
-        });
-
-        if (!deletedPost) {
-            res.status(404).json({ message: 'No post found with this id or you do not have access to make changes.' });
-            return;
-        }
-
-        res.status(200).json(deletedPost);
-    } catch (err) {
-        res.status(400).json(err);
+        res.status(500).json(err);
     }
 });
 
 module.exports = router;
+

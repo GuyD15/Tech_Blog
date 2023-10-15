@@ -87,5 +87,16 @@ router.get("/signup", (req, res) => {
 router.all("/login", (req, res) => {
     req.session.logged_in ? res.redirect("/dashboard") : res.render("login");
 });
+// User logout route
+router.get('/logout', (req, res) => {
+    if (req.session.logged_in) {
+        req.session.destroy(() => {
+            res.redirect('/login');  // Redirect to login page after logging out
+        });
+    } else {
+        res.redirect('/login');  // If not logged in, just redirect to login page
+    }
+});
+
 
 module.exports = router;
