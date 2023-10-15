@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt');
 
 // User registration route
 router.post('/signup', async (req, res) => {
+    // Check if password and confirmPassword match
+    if (req.body.password !== req.body.confirmPassword) {
+        return res.status(400).json({ message: 'Passwords do not match!' });
+    }
+
     try {
         const userData = await User.create(req.body);
 

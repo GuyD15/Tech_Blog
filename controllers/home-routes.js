@@ -5,7 +5,7 @@ const withAuth = require("../utils/auth");
 const defaultBlogPostIncludes = [
     {
         model: User,
-        attributes: ["name"],
+        attributes: ["username"],
     },
     {
         model: Comment,
@@ -73,6 +73,14 @@ router.get("/create/:id", async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
+    }
+});
+
+router.get("/signup", (req, res) => {
+    if (req.session.logged_in) {
+        res.redirect("/dashboard");
+    } else {
+        res.render("signup");
     }
 });
 
